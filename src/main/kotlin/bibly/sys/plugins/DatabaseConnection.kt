@@ -1,5 +1,7 @@
 package bibly.sys.plugins
 
+import bibly.sys.plugins.tables.Livros
+import bibly.sys.plugins.tables.Solicitantes
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -10,10 +12,10 @@ object DatabaseConnection {
     fun init(){
         val driverClassName = "org.postgresql.Driver"
         val jdbcUrl = "jdbc:postgresql://localhost:5432/bibly"
-        val database = Database.connect(jdbcUrl, driverClassName,"postgres", "postgres")
+        val database = Database.connect(jdbcUrl, driverClassName,"bibly", "bibly")
         transaction(database) {
-//            SchemaUtils.create()
-//            SchemaUtils.create(Books)
+            SchemaUtils.create(Livros)
+            SchemaUtils.create(Solicitantes)
         }
 
     }
