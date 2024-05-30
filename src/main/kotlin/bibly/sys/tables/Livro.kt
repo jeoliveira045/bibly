@@ -5,9 +5,9 @@ import org.jetbrains.exposed.sql.*
 
 @Serializable
 data class Livro(
-    var id: Long,
+    var id: Int,
     var nome: String,
-    var ISBN: String,
+    var isbn: String,
     var genero: String,
     var autor: String
 )

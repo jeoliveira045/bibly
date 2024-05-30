@@ -4,11 +4,13 @@ import bibly.sys.plugins.tables.Livro
 import bibly.sys.plugins.tables.Livros
 import bibly.sys.plugins.tables.Solicitantes
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 
+@Serializable
 data class Emprestimo(
-    var id: Long,
+    var id: Int,
     val dtEmprestimoEm: LocalDate,
     val prazoDevolucaoEm: LocalDate,
     val dataDevolucao: LocalDate,
@@ -20,7 +22,7 @@ object Emprestimos: Table(){
     val id = integer("id").autoIncrement()
     val dtEmprestimoEm = date("dtEmprestimoEm")
     val prazoDevolucaoEm = date("prazoDevolucaoEm")
-    val dataDevolucaoEm = date("dataDevolucao")
+    val dataDevolucao = date("dataDevolucao")
     val solicitante_id = integer("solicitante_id").references(Solicitantes.id)
     val livro_id = integer("livro_id").references(Livros.id)
 

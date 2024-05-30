@@ -8,13 +8,13 @@ import org.jetbrains.exposed.sql.kotlin.datetime.date
 
 @Serializable
 data class Solicitante(
-    var id: Long,
+    var id: Int,
     var nome: String,
     var sobrenome: String,
     var dataNascimento: LocalDate,
     var genero: String,
     var endereco: String,
-    var CPF: String
+    var cpf: String
 )
 
 object Solicitantes : Table(){
