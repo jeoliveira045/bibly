@@ -2,6 +2,7 @@ package bibly.sys.plugins
 
 import bibly.sys.plugins.tables.Livros
 import bibly.sys.plugins.tables.Solicitantes
+import bibly.sys.tables.Emprestimos
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -16,6 +17,7 @@ object DatabaseConnection {
         transaction(database) {
             SchemaUtils.create(Livros)
             SchemaUtils.create(Solicitantes)
+            SchemaUtils.create(Emprestimos)
         }
 
     }

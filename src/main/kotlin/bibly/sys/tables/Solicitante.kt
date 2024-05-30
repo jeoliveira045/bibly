@@ -2,7 +2,6 @@ package bibly.sys.plugins.tables
 
 import kotlinx.serialization.Serializable
 import kotlinx.datetime.LocalDate
-import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 
@@ -26,5 +25,7 @@ object Solicitantes : Table(){
     val genero = varchar("genero", 50)
     val endereco = varchar("endereco", 50)
     var cpf = varchar("cpf", 50)
+
+    override val primaryKey = PrimaryKey(Solicitantes.id)
 
 }
