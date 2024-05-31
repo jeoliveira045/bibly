@@ -1,62 +1,45 @@
 package bibly.sys.repository
 
 import bibly.sys.plugins.DatabaseConnection
+import bibly.sys.plugins.daoToEmprestimos
 import bibly.sys.tables.Emprestimo
+import bibly.sys.tables.EmprestimoDAO
 import bibly.sys.tables.Emprestimos
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 class EmprestimoRepository {
     suspend fun findAll(): List<Emprestimo> = DatabaseConnection.dbQuery {
-        Emprestimos.selectAll().map { row ->
-            Emprestimo(
-                id = row[Emprestimos.id],
-                dtEmprestimoEm = row[Emprestimos.dtEmprestimoEm],
-                prazoDevolucaoEm = row[Emprestimos.prazoDevolucaoEm],
-                dataDevolucao = row[Emprestimos.dataDevolucao],
-                solicitante_id = row[Emprestimos.solicitante_id],
-                livro_id = row[Emprestimos.livro_id],
-            )
-        }
+        EmprestimoDAO.all().map(::daoToEmprestimos)
     }
 
     suspend fun findById(id: Int): Emprestimo = DatabaseConnection.dbQuery {
-        Emprestimos.select { Emprestimos.id eq id }.map { row ->
-            Emprestimo(
-                id = row[Emprestimos.id],
-                dtEmprestimoEm = row[Emprestimos.dtEmprestimoEm],
-                prazoDevolucaoEm = row[Emprestimos.prazoDevolucaoEm],
-                dataDevolucao = row[Emprestimos.dataDevolucao],
-                solicitante_id = row[Emprestimos.solicitante_id],
-                livro_id = row[Emprestimos.livro_id],
-            )
-        }.single()
+        EmprestimoDAO.find({ Emprestimos.id eq id }).limit(1).map(::daoToEmprestimos).single()
     }
 
-    suspend fun insert(livro: Emprestimo): Unit{
+    suspend fun insert(emprestimo: Emprestimo) = DatabaseConnection.dbQuery{
         Emprestimos.insert {
-            it[Emprestimos.id] = livro.id
-            it[Emprestimos.dtEmprestimoEm] = livro.dtEmprestimoEm
-            it[Emprestimos.prazoDevolucaoEm] = livro.prazoDevolucaoEm
-            it[Emprestimos.dataDevolucao] = livro.dataDevolucao
-            it[Emprestimos.solicitante_id] = livro.solicitante_id
-            it[Emprestimos.livro_id] = livro.livro_id
+            it[Emprestimos.dtEmprestimoEm] = emprestimo.dtEmprestimoEm
+            it[Emprestimos.prazoDevolucaoEm] = emprestimo.prazoDevolucaoEm
+            it[Emprestimos.dataDevolucao] = emprestimo.dataDevolucao
+            it[Emprestimos.solicitante_id] = emprestimo.solicitante_id
+            it[Emprestimos.livro_id] = emprestimo.livro_id
 
         }
     }
 
-    suspend fun update(id: Int,livro: Emprestimo): Unit{
+    suspend fun update(id: Int,emprestimo: Emprestimo) = DatabaseConnection.dbQuery{
         Emprestimos.update({ Emprestimos.id eq  id}) {
-            it[Emprestimos.id] = livro.id
-            it[Emprestimos.dtEmprestimoEm] = livro.dtEmprestimoEm
-            it[Emprestimos.prazoDevolucaoEm] = livro.prazoDevolucaoEm
-            it[Emprestimos.dataDevolucao] = livro.dataDevolucao
-            it[Emprestimos.solicitante_id] = livro.solicitante_id
-            it[Emprestimos.livro_id] = livro.livro_id
+            it[Emprestimos.id] = emprestimo.id!!
+            it[Emprestimos.dtEmprestimoEm] = emprestimo.dtEmprestimoEm
+            it[Emprestimos.prazoDevolucaoEm] = emprestimo.prazoDevolucaoEm
+            it[Emprestimos.dataDevolucao] = emprestimo.dataDevolucao
+            it[Emprestimos.solicitante_id] = emprestimo.solicitante_id
+            it[Emprestimos.livro_id] = emprestimo.livro_id
         }
     }
 
-    suspend fun delete(id: Int){
+    suspend fun delete(id: Int) = DatabaseConnection.dbQuery{
         Emprestimos.deleteWhere { Emprestimos.id eq  id }
     }
 }

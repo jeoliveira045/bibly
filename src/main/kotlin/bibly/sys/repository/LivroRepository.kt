@@ -1,38 +1,40 @@
 package bibly.sys.repository
 
+import bibly.sys.plugins.DatabaseConnection
 import bibly.sys.plugins.tables.Livro
 import bibly.sys.plugins.tables.Livros
 import bibly.sys.plugins.DatabaseConnection.dbQuery
+import bibly.sys.plugins.daoToLivros
+import bibly.sys.plugins.tables.LivroDAO
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 class LivroRepository {
 
     suspend fun findAll(): List<Livro> = dbQuery {
-        Livros.selectAll().map { row ->
-            Livro(id = row[Livros.id], nome = row[Livros.nome], isbn = row[Livros.isbn], autor = row[Livros.autor], genero = row[Livros.genero])
-        }
+        LivroDAO.all().map(::daoToLivros)
     }
+
 
     suspend fun findById(id: Int): Livro = dbQuery {
-        Livros.select{Livros.id eq id}.map { row ->
-            Livro(id = row[Livros.id], nome = row[Livros.nome], isbn = row[Livros.isbn], autor = row[Livros.autor], genero = row[Livros.genero])
-        }.single()
+        LivroDAO.find({Livros.id eq id})
+            .limit(1)
+            .map(::daoToLivros)
+            .single()
     }
 
-    suspend fun insert(livro: Livro): Unit{
-        Livros.insert {
-            it[Livros.id] = livro.id
-            it[Livros.nome] = livro.nome
-            it[Livros.isbn] = livro.isbn
-            it[Livros.autor] = livro.autor
-            it[Livros.genero] = livro.genero
+    suspend fun insert(livro: Livro) = DatabaseConnection.dbQuery{
+        LivroDAO.new {
+            nome =  livro.nome
+            isbn = livro.isbn
+            genero = livro.genero
+            autor = livro.autor
         }
     }
 
-    suspend fun update(id: Int,livro: Livro): Unit{
+    suspend fun update(id: Int,livro: Livro) = DatabaseConnection.dbQuery{
         Livros.update({Livros.id eq  id}) {
-            it[Livros.id] = livro.id
+            it[Livros.id] = livro.id!!
             it[Livros.nome] = livro.nome
             it[Livros.isbn] = livro.isbn
             it[Livros.autor] = livro.autor
@@ -40,7 +42,7 @@ class LivroRepository {
         }
     }
 
-    suspend fun delete(id: Int){
+    suspend fun delete(id: Int) = DatabaseConnection.dbQuery{
         Livros.deleteWhere { Livros.id eq  id }
     }
 }
