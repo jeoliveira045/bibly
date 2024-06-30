@@ -1,0 +1,9 @@
+services:
+  bibly-kotlin:
+    image: postgres
+    environment:
+      POSTGRES_USER: biblyk
+      POSTGRES_PASSWORD: biblyk
+      POSTGRES_DB: biblyk
+    ports:
+      - 5432:5432
