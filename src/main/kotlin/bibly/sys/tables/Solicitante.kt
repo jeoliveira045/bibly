@@ -11,7 +11,7 @@ import org.jetbrains.exposed.sql.kotlin.datetime.date
 
 
 @Serializable
-data class Solicitante(
+open class Solicitante(
     var id: Int?,
     var nome: String,
     var sobrenome: String,
@@ -21,16 +21,14 @@ data class Solicitante(
     var cpf: String
 )
 
-object Solicitantes : IntIdTable(){
-    val nome = varchar("nome", 50)
-    val sobrenome = varchar("sobrenome", 50)
-    val datanascimento = date("datanascimento")
-    val genero = varchar("genero", 50)
-    val endereco = varchar("endereco", 50)
+object Solicitantes: IntIdTable(){
+    var nome = varchar("nome", 50)
+    var sobrenome = varchar("sobrenome", 50)
+    var datanascimento = date("datanascimento")
+    var genero = varchar("genero", 50)
+    var endereco = varchar("endereco", 50)
     var cpf = varchar("cpf", 50)
-
 }
-
 class SolicitanteDAO(id: EntityID<Int>): IntEntity(id){
     companion object: IntEntityClass<SolicitanteDAO>(Solicitantes)
     var nome by Solicitantes.nome

@@ -13,8 +13,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object DatabaseConnection {
     fun init(){
         val driverClassName = "org.postgresql.Driver"
-        val jdbcUrl = "jdbc:postgresql://localhost:5432/bibly"
-        val database = Database.connect(jdbcUrl, driverClassName,"bibly", "bibly")
+        val jdbcUrl = "jdbc:postgresql://localhost:5432/biblyk"
+        val database = Database.connect(jdbcUrl, driverClassName,"biblyk", "biblyk")
         transaction(database) {
             SchemaUtils.create(Livros)
             SchemaUtils.create(Solicitantes)
@@ -41,7 +41,7 @@ fun daoToLivros(dao: LivroDAO) = Livro(
     nome = dao.nome,
     isbn = dao.isbn,
     autor = dao.autor,
-    genero = dao.genero,
+    genero = dao.genero
 )
 
 fun daoToEmprestimos(dao: EmprestimoDAO) = Emprestimo(

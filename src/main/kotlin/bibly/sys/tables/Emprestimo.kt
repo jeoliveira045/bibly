@@ -23,11 +23,11 @@ data class Emprestimo(
 )
 
 object Emprestimos: IntIdTable(){
-    val dtEmprestimoEm = date("dtEmprestimoEm")
-    val prazoDevolucaoEm = date("prazoDevolucaoEm")
-    val dataDevolucao = date("dataDevolucao")
-    val solicitante_id = integer("solicitante_id").references(Solicitantes.id)
-    val livro_id = integer("livro_id").references(Livros.id)
+    var dtEmprestimoEm = date("dtEmprestimoEm")
+    var prazoDevolucaoEm = date("prazoDevolucaoEm")
+    var dataDevolucao = date("dataDevolucao")
+    var solicitante_id = integer("solicitante_id").references(Solicitantes.id)
+    var livro_id = integer("livro_id").references(Livros.id)
 }
 
 class EmprestimoDAO(id: EntityID<Int>): IntEntity(id){

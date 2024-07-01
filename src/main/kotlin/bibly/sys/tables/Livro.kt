@@ -17,12 +17,11 @@ data class Livro(
     var autor: String
 )
 
-object Livros: IntIdTable() {
-    val nome = varchar("nome", 50)
-    val isbn = varchar("isbn", 50)
-    val genero = varchar("genero", 50)
-    val autor = varchar("autor", 50)
-
+object Livros: IntIdTable(){
+    var nome = varchar("nome", 50)
+    var isbn = varchar("isbn", 50)
+    var genero = varchar("genero", 50)
+    var autor = varchar("autor", 50)
 }
 
 class LivroDAO(id: EntityID<Int>): IntEntity(id){
