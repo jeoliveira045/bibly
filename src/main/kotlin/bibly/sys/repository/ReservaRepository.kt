@@ -2,9 +2,7 @@ package bibly.sys.repository
 
 import bibly.sys.plugins.DatabaseConnection
 import bibly.sys.plugins.daoToReservas
-import bibly.sys.tables.Reserva
-import bibly.sys.tables.ReservaDAO
-import bibly.sys.tables.Reservas
+import bibly.sys.tables.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateStatement
@@ -22,25 +20,29 @@ class ReservaRepository {
             .single()
     }
 
-    suspend fun insert(cliente: Reserva) = DatabaseConnection.dbQuery{
+    suspend fun insert(reserva: Reserva) = DatabaseConnection.dbQuery{
         {
             ReservaDAO.new {
-                dataReserva = cliente.dataReserva
-                dataEmprestimoEm = cliente.dataEmprestimoEm
-                prazoDevolucao = cliente.prazoDevolucao
-                cliente_id = cliente.cliente_id
-                livro_id = cliente.livro_id
+                dataReserva = reserva.dataReserva
+                dataEmprestimoEm = reserva.dataEmprestimoEm
+                prazoDevolucao = reserva.prazoDevolucao
+                cliente_id = reserva.cliente_id
+                livro_id = reserva.livro_id
+                situacaoreserva_id = reserva.situacaoreserva_id
             }
         }
     }
 
-    suspend fun update(id: Int,cliente: Reserva) = DatabaseConnection.dbQuery{
-        Reservas.update {
-            it[Reservas.dataReserva] = cliente.dataReserva
-            it[Reservas.dataEmprestimoEm] = cliente.dataEmprestimoEm
-            it[Reservas.prazoDevolucao]  = cliente.prazoDevolucao
-            it[Reservas.cliente_id] = cliente.cliente_id
-            it[Reservas.livro_id] = cliente.livro_id
+    suspend fun update(id: Int,reserva: Reserva) = DatabaseConnection.dbQuery{
+
+        ReservaDAO.findByIdAndUpdate(id) {
+
+            it.dataReserva = reserva.dataReserva
+            it.dataEmprestimoEm = reserva.dataEmprestimoEm
+            it.prazoDevolucao = reserva.prazoDevolucao
+            it.cliente_id = reserva.cliente_id
+            it.livro_id = reserva.livro_id
+            it.situacaoreserva_id = reserva.situacaoreserva_id
         }
     }
 
@@ -48,4 +50,6 @@ class ReservaRepository {
         Reservas.deleteWhere { Reservas.id eq  id }
     }
 }
+
+
 

@@ -17,7 +17,8 @@ data class Reserva(
     val dataEmprestimoEm: LocalDate,
     val prazoDevolucao: LocalDate,
     val cliente_id: Int,
-    val livro_id: Int
+    val livro_id: Int,
+    val situacaoreserva_id: Int
 )
 
 object Reservas: IntIdTable(){
@@ -26,6 +27,7 @@ object Reservas: IntIdTable(){
     val prazoDevolucao = date("prazoDevolucao")
     val cliente_id = integer("cliente_id").references(Clientes.id)
     val livro_id = integer("livro_id").references(Livros.id)
+    val situacaoreserva_id = integer("situacaoreserva_id").references(SituacaoReservas.id)
 }
 
 class ReservaDAO(id: EntityID<Int>): IntEntity(id){
@@ -35,6 +37,7 @@ class ReservaDAO(id: EntityID<Int>): IntEntity(id){
     var prazoDevolucao by Reservas.prazoDevolucao
     var cliente_id by Reservas.cliente_id
     var livro_id by Reservas.livro_id
+    var situacaoreserva_id by Reservas.situacaoreserva_id
 }
 
 

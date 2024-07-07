@@ -16,7 +16,14 @@ object DatabaseConnection {
         val jdbcUrl = "jdbc:postgresql://localhost:5432/biblyk"
         val database = Database.connect(jdbcUrl, driverClassName,"biblyk", "biblyk")
         transaction(database) {
-            SchemaUtils.create(Livros,Clientes, Emprestimos, EmprestimosToLivros)
+            SchemaUtils.create(
+                Livros,
+                Clientes,
+                Emprestimos,
+                EmprestimosToLivros,
+                SituacaoEmprestimos,
+                SituacaoReservas
+            )
         }
 
     }
@@ -49,6 +56,7 @@ fun daoToEmprestimos(dao: EmprestimoDAO) = Emprestimo(
     dataDevolucao = dao.dataDevolucao,
     cliente_id = dao.cliente_id,
     livros = dao.livros.map(::daoToLivros)
+//    situacaoemprestimo_id = dao.situacaoemprestimo_id
 )
 
 fun daoToReservas(dao: ReservaDAO) = Reserva(
@@ -57,5 +65,16 @@ fun daoToReservas(dao: ReservaDAO) = Reserva(
     dataEmprestimoEm = dao.dataEmprestimoEm,
     prazoDevolucao = dao.prazoDevolucao,
     cliente_id = dao.cliente_id,
-    livro_id = dao.livro_id
+    livro_id = dao.livro_id,
+    situacaoreserva_id = dao.situacaoreserva_id
+)
+
+fun daoToSituacaoReservas(dao: SituacaoReservaDAO) = SituacaoReserva(
+    id = dao.id.value,
+    descricao = dao.descricao
+)
+
+fun daoToSituacaoEmprestimos(dao: SituacaoEmprestimoDAO) = SituacaoEmprestimo(
+    id = dao.id.value,
+    descricao = dao.descricao
 )

@@ -17,18 +17,19 @@ import org.jetbrains.exposed.sql.kotlin.datetime.date
 @Serializable
 data class Emprestimo(
     var id: Int?,
-    val dtEmprestimoEm: LocalDate,
-    val prazoDevolucaoEm: LocalDate,
-    val dataDevolucao: LocalDate,
-    val cliente_id: Int,
-    val livros: List<Livro>
+    var dtEmprestimoEm: LocalDate,
+    var prazoDevolucaoEm: LocalDate,
+    var dataDevolucao: LocalDate,
+    var cliente_id: Int,
+    var livros: List<Livro>
 )
 
 object Emprestimos: IntIdTable(){
-    val dtEmprestimoEm = date("dtEmprestimoEm")
-    val prazoDevolucaoEm = date("prazoDevolucaoEm")
-    val dataDevolucao = date("dataDevolucao")
-    val cliente_id = integer("cliente_id").references(Clientes.id)
+    var dtEmprestimoEm = date("dtEmprestimoEm")
+    var prazoDevolucaoEm = date("prazoDevolucaoEm")
+    var dataDevolucao = date("dataDevolucao")
+    var cliente_id = integer("cliente_id").references(Clientes.id)
+//    val situacaoemprestimo_id = integer("situacaoemprestimo_id").references(SituacaoEmprestimos.id)
 }
 
 class EmprestimoDAO(id: EntityID<Int>): IntEntity(id){
@@ -38,4 +39,5 @@ class EmprestimoDAO(id: EntityID<Int>): IntEntity(id){
     var dataDevolucao by Emprestimos.dataDevolucao
     var cliente_id by Emprestimos.cliente_id
     var livros by LivroDAO via EmprestimosToLivros
+//    var situacaoemprestimo_id by Emprestimos.situacaoemprestimo_id
 }
