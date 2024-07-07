@@ -1,8 +1,9 @@
 package bibly.sys.tables
 
 import bibly.sys.plugins.tables.Livro
+import bibly.sys.plugins.tables.LivroDAO
 import bibly.sys.plugins.tables.Livros
-import bibly.sys.tables.Solicitantes
+import bibly.sys.tables.Clientes
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.dao.IntEntity
@@ -18,15 +19,15 @@ data class Emprestimo(
     val dtEmprestimoEm: LocalDate,
     val prazoDevolucaoEm: LocalDate,
     val dataDevolucao: LocalDate,
-    val solicitante_id: Int,
-    val livro_id: Int
+    val cliente_id: Int,
+    val livros: List<Livro>
 )
 
 object Emprestimos: IntIdTable(){
     val dtEmprestimoEm = date("dtEmprestimoEm")
     val prazoDevolucaoEm = date("prazoDevolucaoEm")
     val dataDevolucao = date("dataDevolucao")
-    val solicitante_id = integer("solicitante_id").references(Solicitantes.id)
+    val cliente_id = integer("cliente_id").references(Clientes.id)
     val livro_id = integer("livro_id").references(Livros.id)
 }
 
@@ -35,6 +36,6 @@ class EmprestimoDAO(id: EntityID<Int>): IntEntity(id){
     var dtEmprestimoEm by Emprestimos.dtEmprestimoEm
     var prazoDevolucaoEm by Emprestimos.prazoDevolucaoEm
     var dataDevolucao by Emprestimos.dataDevolucao
-    var solicitante_id by Emprestimos.solicitante_id
-    var livro_id by Emprestimos.livro_id
+    var cliente_id by Emprestimos.cliente_id
+    var livros by LivroDAO via EmprestimosToLivros
 }

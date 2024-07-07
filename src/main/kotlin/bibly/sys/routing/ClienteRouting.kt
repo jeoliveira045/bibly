@@ -1,16 +1,16 @@
 package bibly.sys.routing
 
-import bibly.sys.tables.Solicitante
-import bibly.sys.repository.SolicitanteRepository
+import bibly.sys.tables.Cliente
+import bibly.sys.repository.ClienteRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Application.configuringSolicitanteRouting(){
-    var endpoint = "/solicitante"
-    var repository = SolicitanteRepository()
+fun Application.configuringClienteRouting(){
+    var endpoint = "/cliente"
+    var repository = ClienteRepository()
 
     routing {
         get(endpoint){
@@ -18,19 +18,19 @@ fun Application.configuringSolicitanteRouting(){
         }
 
         get("$endpoint/{id}"){
-            var solicitante = repository.findById(call.parameters["id"]!!.toInt())
-            call.respond(message = solicitante)
+            var cliente = repository.findById(call.parameters["id"]!!.toInt())
+            call.respond(message = cliente)
         }
 
         post(endpoint){
-            var solicitante = call.receive<Solicitante>()
-            repository.insert(solicitante)
+            var cliente = call.receive<Cliente>()
+            repository.insert(cliente)
             call.respond(HttpStatusCode.OK)
         }
 
         put("$endpoint/{id}"){
-            var solicitante = call.receive<Solicitante>()
-            repository.update(call.parameters["id"]!!.toInt(), solicitante)
+            var cliente = call.receive<Cliente>()
+            repository.update(call.parameters["id"]!!.toInt(), cliente)
             call.respond(HttpStatusCode.OK)
         }
 

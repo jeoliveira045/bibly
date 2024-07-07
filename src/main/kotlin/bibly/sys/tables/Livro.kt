@@ -1,6 +1,6 @@
 package bibly.sys.plugins.tables
 
-import bibly.sys.tables.Solicitantes
+import bibly.sys.tables.Clientes
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass

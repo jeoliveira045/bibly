@@ -22,7 +22,7 @@ class EmprestimoRepository {
             it[Emprestimos.dtEmprestimoEm] = emprestimo.dtEmprestimoEm
             it[Emprestimos.prazoDevolucaoEm] = emprestimo.prazoDevolucaoEm
             it[Emprestimos.dataDevolucao] = emprestimo.dataDevolucao
-            it[Emprestimos.solicitante_id] = emprestimo.solicitante_id
+            it[Emprestimos.cliente_id] = emprestimo.cliente_id
             it[Emprestimos.livro_id] = emprestimo.livro_id
 
         }
@@ -34,7 +34,7 @@ class EmprestimoRepository {
             it[Emprestimos.dtEmprestimoEm] = emprestimo.dtEmprestimoEm
             it[Emprestimos.prazoDevolucaoEm] = emprestimo.prazoDevolucaoEm
             it[Emprestimos.dataDevolucao] = emprestimo.dataDevolucao
-            it[Emprestimos.solicitante_id] = emprestimo.solicitante_id
+            it[Emprestimos.cliente_id] = emprestimo.cliente_id
             it[Emprestimos.livro_id] = emprestimo.livro_id
         }
     }

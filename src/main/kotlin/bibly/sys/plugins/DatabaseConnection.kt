@@ -17,7 +17,7 @@ object DatabaseConnection {
         val database = Database.connect(jdbcUrl, driverClassName,"bibly", "bibly")
         transaction(database) {
             SchemaUtils.create(Livros)
-            SchemaUtils.create(Solicitantes)
+            SchemaUtils.create(Clientes)
             SchemaUtils.create(Emprestimos)
         }
 
@@ -26,7 +26,7 @@ object DatabaseConnection {
         newSuspendedTransaction (Dispatchers.IO) { block() }
 }
 
-fun daoToSolicitantes(dao: SolicitanteDAO) = Solicitante(
+fun daoToClientes(dao: ClienteDAO) = Cliente(
     id = dao.id.value,
     nome = dao.nome,
     sobrenome = dao.sobrenome,
@@ -49,6 +49,6 @@ fun daoToEmprestimos(dao: EmprestimoDAO) = Emprestimo(
     dtEmprestimoEm = dao.dtEmprestimoEm,
     prazoDevolucaoEm = dao.prazoDevolucaoEm,
     dataDevolucao = dao.dataDevolucao,
-    solicitante_id = dao.solicitante_id,
-    livro_id = dao.livro_id
+    cliente_id = dao.cliente_id,
+    livros = dao.livros.map(::daoToLivros)
 )

@@ -15,7 +15,7 @@
         - dataDevolucao: DateTime
     }
 
-    class Solicitante{
+    class Cliente{
         - id: Long
         - nome: String
         - sobrenome: String
@@ -26,5 +26,5 @@
     }
 
     Emprestimo "0..*"--> "1" Livro
-    Emprestimo "0..*" --> "1" Solicitante
+    Emprestimo "0..*" --> "1" Cliente
 @enduml

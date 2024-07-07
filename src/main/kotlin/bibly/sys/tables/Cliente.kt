@@ -6,12 +6,11 @@ import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 
 
 @Serializable
-data class Solicitante(
+data class Cliente(
     var id: Int?,
     var nome: String,
     var sobrenome: String,
@@ -21,7 +20,7 @@ data class Solicitante(
     var cpf: String
 )
 
-object Solicitantes : IntIdTable(){
+object Clientes : IntIdTable(){
     val nome = varchar("nome", 50)
     val sobrenome = varchar("sobrenome", 50)
     val datanascimento = date("datanascimento")
@@ -31,12 +30,12 @@ object Solicitantes : IntIdTable(){
 
 }
 
-class SolicitanteDAO(id: EntityID<Int>): IntEntity(id){
-    companion object: IntEntityClass<SolicitanteDAO>(Solicitantes)
-    var nome by Solicitantes.nome
-    var sobrenome by Solicitantes.sobrenome
-    var datanascimento by Solicitantes.datanascimento
-    var genero by Solicitantes.genero
-    var endereco by Solicitantes.endereco
-    var cpf by Solicitantes.cpf
+class ClienteDAO(id: EntityID<Int>): IntEntity(id){
+    companion object: IntEntityClass<ClienteDAO>(Clientes)
+    var nome by Clientes.nome
+    var sobrenome by Clientes.sobrenome
+    var datanascimento by Clientes.datanascimento
+    var genero by Clientes.genero
+    var endereco by Clientes.endereco
+    var cpf by Clientes.cpf
 }
