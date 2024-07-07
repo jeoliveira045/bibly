@@ -10,6 +10,7 @@ import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
+import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 
@@ -28,7 +29,6 @@ object Emprestimos: IntIdTable(){
     val prazoDevolucaoEm = date("prazoDevolucaoEm")
     val dataDevolucao = date("dataDevolucao")
     val cliente_id = integer("cliente_id").references(Clientes.id)
-    val livro_id = integer("livro_id").references(Livros.id)
 }
 
 class EmprestimoDAO(id: EntityID<Int>): IntEntity(id){

@@ -4,6 +4,7 @@ import bibly.sys.plugins.*
 import bibly.sys.routing.configuringEmprestimoRouting
 import bibly.sys.routing.configuringLivroRouting
 import bibly.sys.routing.configuringClienteRouting
+import bibly.sys.routing.configuringReservaRouting
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -26,4 +27,5 @@ fun Application.module() {
     configuringClienteRouting()
     configuringLivroRouting()
     configuringEmprestimoRouting()
+    configuringReservaRouting()
 }
