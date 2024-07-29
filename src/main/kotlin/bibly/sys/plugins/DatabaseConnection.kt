@@ -6,9 +6,12 @@ import bibly.sys.plugins.tables.Livros
 import bibly.sys.tables.*
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.Query
+import org.jetbrains.exposed.sql.Schema
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.vendors.SchemaMetadata
 
 object DatabaseConnection {
     fun init(){
@@ -20,9 +23,11 @@ object DatabaseConnection {
                 Livros,
                 Clientes,
                 Emprestimos,
+                Reservas,
                 EmprestimosToLivros,
                 SituacaoEmprestimos,
-                SituacaoReservas
+                SituacaoReservas,
+                LivrosQuantiaEstoque
             )
         }
 
@@ -38,7 +43,13 @@ fun daoToClientes(dao: ClienteDAO) = Cliente(
     endereco = dao.endereco,
     cpf = dao.cpf,
     genero = dao.genero,
-    datanascimento = dao.datanascimento
+    datanascimento = dao.datanascimento,
+    responsavel = dao.responsavel,
+    cpfResponsavel = dao.cpfResponsavel,
+    comprovanteResidencia = dao.comprovanteResidencia,
+    certidaoNascimento = dao.certidaoNascimento,
+    rg = dao.rg,
+    numeroTelefone = dao.numeroTelefone,
 )
 
 fun daoToLivros(dao: LivroDAO) = Livro(
@@ -47,6 +58,10 @@ fun daoToLivros(dao: LivroDAO) = Livro(
     isbn = dao.isbn,
     autor = dao.autor,
     genero = dao.genero,
+    largura = dao.largura,
+    altura = dao.altura,
+    idioma = dao.idioma,
+    dataEdicao = dao.dataEdicao
 )
 
 fun daoToEmprestimos(dao: EmprestimoDAO) = Emprestimo(
@@ -55,8 +70,8 @@ fun daoToEmprestimos(dao: EmprestimoDAO) = Emprestimo(
     prazoDevolucaoEm = dao.prazoDevolucaoEm,
     dataDevolucao = dao.dataDevolucao,
     cliente_id = dao.cliente_id,
-    livros = dao.livros.map(::daoToLivros)
-//    situacaoemprestimo_id = dao.situacaoemprestimo_id
+    livros = dao.livros.map(::daoToLivros),
+    situacaoemprestimo_id = dao.situacaoemprestimo_id
 )
 
 fun daoToReservas(dao: ReservaDAO) = Reserva(

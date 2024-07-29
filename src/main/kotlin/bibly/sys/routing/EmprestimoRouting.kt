@@ -1,6 +1,7 @@
 package bibly.sys.routing
 
 import bibly.sys.repository.EmprestimoRepository
+import bibly.sys.services.AdicionarEmprestimoService
 import bibly.sys.tables.Emprestimo
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -11,6 +12,7 @@ import io.ktor.server.routing.*
 fun Application.configuringEmprestimoRouting(){
     var endpoint = "/emprestimo"
     var repository = EmprestimoRepository()
+    var adicionarEmprestimoService = AdicionarEmprestimoService()
 
     routing {
         get(endpoint){
@@ -24,7 +26,7 @@ fun Application.configuringEmprestimoRouting(){
 
         post(endpoint){
             var emprestimo = call.receive<Emprestimo>()
-            repository.insert(emprestimo)
+            adicionarEmprestimoService.exec(emprestimo)
             call.respond(HttpStatusCode.OK)
         }
 

@@ -5,6 +5,7 @@ import bibly.sys.plugins.daoToEmprestimos
 import bibly.sys.plugins.tables.Livro
 import bibly.sys.plugins.tables.LivroDAO
 import bibly.sys.plugins.tables.Livros
+import bibly.sys.services.AdicionarEmprestimoService
 import bibly.sys.tables.Emprestimo
 import bibly.sys.tables.EmprestimoDAO
 import bibly.sys.tables.Emprestimos
@@ -12,6 +13,7 @@ import bibly.sys.tables.EmprestimosToLivros
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
+import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty1
@@ -20,6 +22,8 @@ import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 
 class EmprestimoRepository {
+
+
     suspend fun findAll(): List<Emprestimo> = DatabaseConnection.dbQuery {
         EmprestimoDAO.all().map(::daoToEmprestimos)
     }
@@ -30,41 +34,37 @@ class EmprestimoRepository {
 
     suspend fun insert(emprestimo: Emprestimo) = DatabaseConnection.dbQuery{
         EmprestimoDAO.new {
-            dtEmprestimoEm = emprestimo.dtEmprestimoEm
-            prazoDevolucaoEm = emprestimo.prazoDevolucaoEm
-            dataDevolucao = emprestimo.dataDevolucao
-            cliente_id = emprestimo.cliente_id
-            livros = listToSizedIterable(emprestimo.livros)
-//            situacaoemprestimo_id = emprestimo.situacaoemprestimo_id
+            objectMapping(this, emprestimo)
         }
     }
 
     suspend fun update(id: Int,emprestimo: Emprestimo) = DatabaseConnection.dbQuery{
         EmprestimoDAO.findByIdAndUpdate(id) {
-            updateMapping(it, emprestimo)
+            objectMapping(it, emprestimo)
         }
     }
 
     suspend fun delete(id: Int) = DatabaseConnection.dbQuery{
         Emprestimos.deleteWhere { Emprestimos.id eq  id }
     }
-}
 
-fun listToSizedIterable(list: List<Livro>): SizedIterable<LivroDAO> {
-    var idList : List<Int> = list.map { livro -> livro.id!! }
-    return LivroDAO.find { Livros.id inList(idList) }
-}
 
-fun updateMapping(it: EmprestimoDAO, emprestimo: Emprestimo){
-    for(daofield in it::class.declaredMemberProperties){
-        var objField = emprestimo::class.declaredMemberProperties.find { it.name == daofield.name }
+}
+fun objectMapping(dao: EmprestimoDAO, dataclass: Emprestimo){
+    for(daofield in dao::class.declaredMemberProperties){
+        var objField = dataclass!!::class.declaredMemberProperties.find { it.name == daofield.name }
         if(objField != null){
             daofield.isAccessible = true
             if(daofield.returnType.toString().contains("SizedIterable")){
-                (daofield as KMutableProperty<EmprestimoDAO>).setter.call(it, listToSizedIterable(objField.getter.call(emprestimo) as List<Livro>))
+                var listKlass = (objField.returnType.arguments[0].type!!.classifier as KClass<*>).simpleName
+                (daofield as KMutableProperty<*>).setter.call(dao, listToSizedIterable(objField.getter.call(dataclass) as List<Livro>))
             }else{
-                (daofield as KMutableProperty<EmprestimoDAO>).setter.call(it, objField.getter.call(emprestimo))
+                (daofield as KMutableProperty<*>).setter.call(dao, objField.getter.call(dataclass))
             }
         }
     }
+}
+fun listToSizedIterable(list: List<Livro>): SizedIterable<LivroDAO> {
+    var idList : List<Int> = list.map { livro -> livro.id!! }
+    return LivroDAO.find { Livros.id inList(idList) }
 }

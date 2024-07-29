@@ -1,10 +1,7 @@
 package bibly.sys
 
 import bibly.sys.plugins.*
-import bibly.sys.routing.configuringEmprestimoRouting
-import bibly.sys.routing.configuringLivroRouting
-import bibly.sys.routing.configuringClienteRouting
-import bibly.sys.routing.configuringReservaRouting
+import bibly.sys.routing.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -32,6 +29,8 @@ fun Application.module() {
     }
     DatabaseConnection.init()
     configuringClienteRouting()
+    configuringSituacaoEmprestimoRouting()
+    configuringSituacaoReservaRouting()
     configuringLivroRouting()
     configuringEmprestimoRouting()
     configuringReservaRouting()
