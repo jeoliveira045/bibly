@@ -23,7 +23,7 @@ data class Cliente(
     var comprovanteResidencia: String,
     var certidaoNascimento: String,
     var rg: String,
-    var numeroTelefone: String,
+    var numeroTelefone: String
 )
 
 object Clientes : IntIdTable(){

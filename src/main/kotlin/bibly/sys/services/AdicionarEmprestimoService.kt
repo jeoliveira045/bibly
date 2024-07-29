@@ -21,9 +21,6 @@ class AdicionarEmprestimoService {
         validateLivrosDisponiveis(emprestimo)
         validateQuantidadeDeLivrosEmprestados(emprestimo)
         validateReservaMaisAntiga(emprestimo)
-
-
-
     }
 
     suspend fun validateQuantidadeDeLivrosEmprestados(emprestimo: Emprestimo){
@@ -45,7 +42,7 @@ class AdicionarEmprestimoService {
                     .minBy { Reservas.dataReserva }
 
 
-                if(reservaQuery.hasValue(Reservas.dataEmprestimoEm)){
+                if(reservaQuery?.hasValue(Reservas.dataEmprestimoEm)!!){
                     reservaQuery[Reservas.cliente_id] != emprestimo.cliente_id && reservaQuery.hasValue(Reservas.dataEmprestimoEm)
                 }else {
                     false
