@@ -9,13 +9,13 @@ DECLARE
 BEGIN
     -- Seleciona o total de livros com o ISBN fornecido
     SELECT QUANTIA INTO TOTAL_LIVROS
-    FROM LIVROQUANTIAESTOQUE
+    FROM LIVROSQUANTIAESTOQUE
     WHERE LIVRO_ID = LIVROID;
 
     -- Seleciona o total de livros emprestados com o ISBN fornecido
     SELECT COUNT(EL.LIVRO_ID) INTO TOTAL_LIVROS_EMPRESTADOS
     FROM EMPRESTIMOS EMP
-    INNER JOIN emprestimo_livro el on EMP.id = el.emprestimo_id
+    INNER JOIN emprestimostolivros el on EMP.id = el.emprestimo_id
     WHERE EMP.DATA_DEVOLUCAO IS NULL AND EL.LIVRO_ID = LIVROID;
 
     -- Calcula a contagem de livros disponíveis
@@ -26,7 +26,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE VIEW LIVROS_DISPONIVEIS AS
+CREATE OR REPLACE VIEW LIVROSDISPONIVEIS AS
 SELECT DISTINCT
 	ID,
 	NOME,

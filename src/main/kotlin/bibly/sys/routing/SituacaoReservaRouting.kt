@@ -1,16 +1,16 @@
 package bibly.sys.routing
 
-import bibly.sys.tables.Solicitante
-import bibly.sys.repository.SolicitanteRepository
+import bibly.sys.tables.SituacaoEmprestimo
+import bibly.sys.repository.SituacaoEmprestimoRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Application.configuringSolicitanteRouting(){
-    var endpoint = "/solicitante"
-    var repository = SolicitanteRepository()
+fun Application.configuringSituacaoEmprestimoRouting(){
+    var endpoint = "/situacao-reserva"
+    var repository = SituacaoEmprestimoRepository()
 
     routing {
         get(endpoint){
@@ -18,19 +18,19 @@ fun Application.configuringSolicitanteRouting(){
         }
 
         get("$endpoint/{id}"){
-            var solicitante = repository.findById(call.parameters["id"]!!.toInt())
-            call.respond(message = solicitante)
+            var reserva = repository.findById(call.parameters["id"]!!.toInt())
+            call.respond(message = reserva)
         }
 
         post(endpoint){
-            var solicitante = call.receive<Solicitante>()
-            repository.insert(solicitante)
+            var reserva = call.receive<SituacaoEmprestimo>()
+            repository.insert(reserva)
             call.respond(HttpStatusCode.OK)
         }
 
         put("$endpoint/{id}"){
-            var solicitante = call.receive<Solicitante>()
-            repository.update(call.parameters["id"]!!.toInt(), solicitante)
+            var reserva = call.receive<SituacaoEmprestimo>()
+            repository.update(call.parameters["id"]!!.toInt(), reserva)
             call.respond(HttpStatusCode.OK)
         }
 
@@ -40,3 +40,4 @@ fun Application.configuringSolicitanteRouting(){
         }
     }
 }
+

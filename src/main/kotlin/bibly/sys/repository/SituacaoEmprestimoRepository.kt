@@ -8,7 +8,7 @@ import bibly.sys.tables.SituacaoEmprestimos
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 
-class SituacaoSituacaoEmprestimoRepository {
+class SituacaoEmprestimoRepository {
     suspend fun findAll(): List<SituacaoEmprestimo> = DatabaseConnection.dbQuery {
         SituacaoEmprestimoDAO.all().map(::daoToSituacaoEmprestimos)
     }
@@ -20,7 +20,6 @@ class SituacaoSituacaoEmprestimoRepository {
     suspend fun insert(emprestimo: SituacaoEmprestimo) = DatabaseConnection.dbQuery{
         SituacaoEmprestimoDAO.new {
             descricao = emprestimo.descricao!!
-//            situacaoemprestimo_id = emprestimo.situacaoemprestimo_id
         }
     }
 
